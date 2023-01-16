@@ -1,0 +1,23 @@
+{
+  "name": "goit-node-js-classes",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vokur13/goit-node-js-classes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vokur13/goit-node-js-classes/issues"
+  },
+  "homepage": "https://github.com/vokur13/goit-node-js-classes#readme",
+  "dependencies": {
+    "calc-js": "^2.0.7"
+  }
+}
