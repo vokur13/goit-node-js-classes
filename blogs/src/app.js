@@ -9,8 +9,6 @@ require('dotenv').config();
 
 const { postsRouter } = require('./routes/posts');
 
-const PORT = process.env.PORT || 8081;
-
 const app = express();
 
 // view engine setup
@@ -39,10 +37,6 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running. Use our API on port: ${PORT}`);
 });
 
 module.exports = app;
