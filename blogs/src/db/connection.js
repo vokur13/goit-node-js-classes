@@ -1,5 +1,9 @@
 const { MongoClient } = require('mongodb');
-// const collection = require('./collection');
+const collection = {};
+
+const getCollection = () => {
+  return collection;
+};
 
 // Connection URL
 const url = process.env.DB_HOST;
@@ -13,11 +17,11 @@ const connectMongoDB = async () => {
   await client.connect();
   console.log('Database connection successful');
   const db = client.db(dbName);
-  //   collection.Posts = db.collection('posts');
-  const collection = db.collection('posts');
-  return collection;
+  //   const collection = db.collection('posts');
+  collection.collection = db.collection('posts');
 };
 
 module.exports = {
   connectMongoDB,
+  getCollection,
 };

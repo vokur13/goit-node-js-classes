@@ -9,21 +9,26 @@ const {
   getPostByID,
   addPost,
   putPost,
-  patchPost,
+  // patchPost,
   deletePost,
 } = require('../controllers/posts');
 
 const {
   addPostValidation,
-  patchPostValidation,
+  // patchPostValidation,
 } = require('../middlewares/validation');
+const { asyncWrapper } = require('../helpers/apiHelper');
+const modelsMiddleware = require('../middlewares/models');
+// const { route } = require('../app');
+
+router.use(modelsMiddleware);
 
 router
-  .get('/', getPosts)
-  .get('/:id', getPostByID)
-  .post('/', addPostValidation, addPost)
-  .put('/:id', addPostValidation, putPost)
-  .patch('/:id', patchPostValidation, patchPost)
-  .delete('/:id', deletePost);
+  .get('/', asyncWrapper(getPosts))
+  .get('/:id', asyncWrapper(getPostByID))
+  .post('/', addPostValidation, asyncWrapper(addPost))
+  .put('/:id', addPostValidation, asyncWrapper(putPost))
+  // .patch('/:id', patchPostValidation, patchPost)
+  .delete('/:id', asyncWrapper(deletePost));
 
 module.exports = { postsRouter: router };

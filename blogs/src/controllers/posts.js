@@ -1,94 +1,96 @@
-const { connectMongoDB } = require('../db/connection');
+const ObjectId = require('mongodb').ObjectId;
 
 /* eslint-disable space-before-function-paren */
 /* eslint-disable object-curly-spacing */
 
-// let posts = [
-//   { id: '1', title: 'test1', content: 'tex1t' },
-//   { id: '2', title: 'test2', content: 'text2' },
-//   { id: '3', title: 'test3', content: 'text3' },
-//   { id: '4', title: 'test4', content: 'text4' },
-// ];
-
 const getPosts = async function (req, res, next) {
-  const findResult = await connectMongoDB();
-  const collection = await findResult.find({}).toArray();
-  // console.log('Found documents =>', collection);
+  const response = await req.db.collection.find({}).toArray();
+  // console.log('Found documents =>', response);
   res.json({
     status: 'success',
     code: 200,
     data: {
-      collection,
+      response,
     },
   });
 };
 
-const getPostByID = function (req, res, next) {
+const getPostByID = async function (req, res, next) {
   const { id } = req.params;
-  const [post] = posts.filter((item) => item.id === id);
-  if (!post) {
+  // const [post] = posts.filter((item) => item.id === id);
+  const response = await req.db.collection.findOne({ _id: new ObjectId(id) });
+  if (!response) {
     return res.status(404).json({
       code: 404,
-      message: `Post id: ${id} not found`,
+      message: `Document id: ${id} not found`,
     });
   }
   res.status(200).json({
     status: 'success',
     code: 200,
-    data: { post },
+    data: { response },
   });
 };
 
-const addPost = (req, res) => {
+const addPost = async (req, res) => {
   const { title, content } = req.body;
-
-  posts.push({
-    id: new Date().getTime().toString(),
-    title,
-    content,
-  });
+  // posts.push({
+  //   id: new Date().getTime().toString(),
+  //   title,
+  //   content,
+  // });
+  const response = await req.db.collection.insertOne({ title, content });
   res.status(201).json({
     status: 'success',
     code: 201,
-    data: { posts },
+    data: { response },
   });
 };
 
-const putPost = (req, res) => {
+const putPost = async (req, res) => {
   const { id } = req.params;
   const { title, content } = req.body;
-  const [post] = posts.filter((item) => item.id === id);
-  post.title = title;
-  post.content = content;
+  // const [post] = posts.filter((item) => item.id === id);
+  // post.title = title;
+  // post.content = content;
+  const response = await req.db.collection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { title, content } }
+  );
   res.json({
     status: 'success',
     code: 200,
-    data: { post },
+    data: { response },
   });
 };
 
-const patchPost = (req, res) => {
+// const patchPost = (req, res) => {
+//   const { id } = req.params;
+//   const { title, content } = req.body;
+//   const [post] = posts.filter((item) => item.id === id);
+//   if (title) {
+//     post.title = title;
+//   }
+//   if (content) {
+//     post.content = content;
+//   }
+//   res.json({
+//     status: 'success',
+//     code: 200,
+//     data: { post },
+//   });
+// };
+
+const deletePost = async (req, res) => {
   const { id } = req.params;
-  const { title, content } = req.body;
-  const [post] = posts.filter((item) => item.id === id);
-  if (title) {
-    post.title = title;
-  }
-  if (content) {
-    post.content = content;
-  }
-  res.json({
+  // const newPosts = posts.filter((item) => item.id !== id);
+  // posts = [...newPosts];
+  await req.db.collection.deleteOne({ _id: new ObjectId(id) });
+  return res.status(200).json({
     status: 'success',
     code: 200,
-    data: { post },
+    message: 'document deleted',
   });
-};
-
-const deletePost = (req, res) => {
-  const { id } = req.params;
-  const newPosts = posts.filter((item) => item.id !== id);
-  posts = [...newPosts];
-  res.status(204).json();
 };
 
 module.exports = {
@@ -96,6 +98,6 @@ module.exports = {
   getPostByID,
   addPost,
   putPost,
-  patchPost,
+  // patchPost,
   deletePost,
 };
