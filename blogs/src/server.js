@@ -5,13 +5,18 @@ const PORT = process.env.PORT || 8081;
 const { connectMongoDB } = require('./db/connection');
 
 async function main() {
-  await connectMongoDB();
+  try {
+    await connectMongoDB();
 
-  app.listen(PORT, () => {
-    console.log(`Server running. Use our API on port: ${PORT}`);
-  });
+    app.listen(PORT, () => {
+      console.log(`Server running. Use our API on port: ${PORT}`);
+    });
 
-  return 'done.';
+    return 'done.';
+  } catch (error) {
+    console.log(error.message);
+    process.exit(1);
+  }
 }
 
 main();
