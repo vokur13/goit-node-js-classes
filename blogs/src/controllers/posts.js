@@ -1,18 +1,24 @@
+const { connectMongoDB } = require('../db/connection');
+
 /* eslint-disable space-before-function-paren */
 /* eslint-disable object-curly-spacing */
-let posts = [
-  { id: '1', title: 'test1', content: 'tex1t' },
-  { id: '2', title: 'test2', content: 'text2' },
-  { id: '3', title: 'test3', content: 'text3' },
-  { id: '4', title: 'test4', content: 'text4' },
-];
 
-const getPosts = function (req, res, next) {
+// let posts = [
+//   { id: '1', title: 'test1', content: 'tex1t' },
+//   { id: '2', title: 'test2', content: 'text2' },
+//   { id: '3', title: 'test3', content: 'text3' },
+//   { id: '4', title: 'test4', content: 'text4' },
+// ];
+
+const getPosts = async function (req, res, next) {
+  const findResult = await connectMongoDB();
+  const collection = await findResult.find({}).toArray();
+  // console.log('Found documents =>', collection);
   res.json({
     status: 'success',
     code: 200,
     data: {
-      posts,
+      collection,
     },
   });
 };
