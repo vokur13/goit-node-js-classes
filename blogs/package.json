@@ -1,0 +1,31 @@
+{
+  "name": "blogs",
+  "version": "1.0.0",
+  "description": "blogs ",
+  "private": true,
+  "scripts": {
+    "start": "cross-env NODE_ENV=production node scr/app.js",
+    "start:dev": "cross-env NODE_ENV=development nodemon src/app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "cross-env": "7.0.3",
+    "debug": "~2.6.9",
+    "dotenv": "^16.0.3",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "joi": "^17.7.0",
+    "morgan": "~1.9.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.32.0",
+    "eslint-config-google": "^0.14.0",
+    "nodemon": "^2.0.20",
+    "npx": "^10.2.2",
+    "mongodb": "^4.13.0"
+  }
+}
