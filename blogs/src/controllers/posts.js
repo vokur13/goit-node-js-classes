@@ -1,4 +1,3 @@
-const { Post } = require('../db/model');
 const {
   getPosts,
   getPostsByID,
@@ -11,7 +10,7 @@ const {
 /* eslint-disable object-curly-spacing */
 
 const getPostsController = async function (req, res, next) {
-  const response = await Post.find({});
+  const response = await getPosts();
 
   res.json({
     status: 'success',
@@ -22,17 +21,10 @@ const getPostsController = async function (req, res, next) {
   });
 };
 
-const getPostByIDController = async function (req, res, next) {
+const getPostByIDController = async (req, res, next) => {
   const { id } = req.params;
 
-  const response = await Post.findById(id);
-
-  if (!response) {
-    return res.status(404).json({
-      code: 404,
-      message: 'Not found',
-    });
-  }
+  const response = await getPostsByID(id);
 
   res.status(200).json({
     status: 'success',
@@ -44,7 +36,7 @@ const getPostByIDController = async function (req, res, next) {
 const addPostController = async (req, res) => {
   const { title, content } = req.body;
 
-  const response = await Post.create({ title, content });
+  const response = await addPost({ title, content });
 
   res.status(201).json({
     status: 'success',
@@ -57,10 +49,7 @@ const putPostController = async (req, res) => {
   const { id } = req.params;
   const { title, content } = req.body;
 
-  await Post.findByIdAndUpdate(id, {
-    $set: { title, content },
-  });
-  const response = await Post.findById(id);
+  const response = await putPost(id, { title, content });
 
   res.json({
     status: 'success',
@@ -72,7 +61,7 @@ const putPostController = async (req, res) => {
 const deletePostController = async (req, res) => {
   const { id } = req.params;
 
-  await Post.findByIdAndRemove(id);
+  await deletePost(id);
 
   res.status(200).json({
     status: 'success',

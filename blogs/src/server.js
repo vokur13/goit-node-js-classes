@@ -3,13 +3,9 @@ const { main } = require('./db/connection');
 
 const PORT = process.env.PORT || 8081;
 
-// services
-// customErrors
-
 async function start() {
   try {
     await main().catch((err) => console.log(err));
-    // await connectMongoDB();
 
     app.listen(PORT, () => {
       console.log(`Server running. Use our API on port: ${PORT}`);
@@ -23,6 +19,3 @@ async function start() {
 }
 
 start();
-// .then(console.log)
-// .catch(console.error)
-// .finally(() => client.close());
