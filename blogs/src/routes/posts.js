@@ -5,30 +5,21 @@ const express = require('express');
 const router = new express.Router();
 
 const {
-  getPosts,
-  getPostByID,
-  addPost,
-  putPost,
-  // patchPost,
-  deletePost,
+  getPostsController,
+  getPostByIDController,
+  addPostController,
+  putPostController,
+  deletePostController,
 } = require('../controllers/posts');
 
-const {
-  addPostValidation,
-  // patchPostValidation,
-} = require('../middlewares/validation');
+const { addPostValidation } = require('../middlewares/validation');
 const { asyncWrapper } = require('../helpers/apiHelper');
-const modelsMiddleware = require('../middlewares/models');
-// const { route } = require('../app');
-
-router.use(modelsMiddleware);
 
 router
-  .get('/', asyncWrapper(getPosts))
-  .get('/:id', asyncWrapper(getPostByID))
-  .post('/', addPostValidation, asyncWrapper(addPost))
-  .put('/:id', addPostValidation, asyncWrapper(putPost))
-  // .patch('/:id', patchPostValidation, patchPost)
-  .delete('/:id', asyncWrapper(deletePost));
+  .get('/', asyncWrapper(getPostsController))
+  .get('/:id', asyncWrapper(getPostByIDController))
+  .post('/', addPostValidation, asyncWrapper(addPostController))
+  .put('/:id', addPostValidation, asyncWrapper(putPostController))
+  .delete('/:id', asyncWrapper(deletePostController));
 
 module.exports = { postsRouter: router };

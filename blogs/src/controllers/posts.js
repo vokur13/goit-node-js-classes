@@ -1,11 +1,18 @@
-const ObjectId = require('mongodb').ObjectId;
+const { Post } = require('../db/model');
+const {
+  getPosts,
+  getPostsByID,
+  addPost,
+  putPost,
+  deletePost,
+} = require('../services/posts');
 
 /* eslint-disable space-before-function-paren */
 /* eslint-disable object-curly-spacing */
 
-const getPosts = async function (req, res, next) {
-  const response = await req.db.collection.find({}).toArray();
-  // console.log('Found documents =>', response);
+const getPostsController = async function (req, res, next) {
+  const response = await Post.find({});
+
   res.json({
     status: 'success',
     code: 200,
@@ -15,16 +22,18 @@ const getPosts = async function (req, res, next) {
   });
 };
 
-const getPostByID = async function (req, res, next) {
+const getPostByIDController = async function (req, res, next) {
   const { id } = req.params;
-  // const [post] = posts.filter((item) => item.id === id);
-  const response = await req.db.collection.findOne({ _id: new ObjectId(id) });
+
+  const response = await Post.findById(id);
+
   if (!response) {
     return res.status(404).json({
       code: 404,
-      message: `Document id: ${id} not found`,
+      message: 'Not found',
     });
   }
+
   res.status(200).json({
     status: 'success',
     code: 200,
@@ -32,14 +41,11 @@ const getPostByID = async function (req, res, next) {
   });
 };
 
-const addPost = async (req, res) => {
+const addPostController = async (req, res) => {
   const { title, content } = req.body;
-  // posts.push({
-  //   id: new Date().getTime().toString(),
-  //   title,
-  //   content,
-  // });
-  const response = await req.db.collection.insertOne({ title, content });
+
+  const response = await Post.create({ title, content });
+
   res.status(201).json({
     status: 'success',
     code: 201,
@@ -47,16 +53,15 @@ const addPost = async (req, res) => {
   });
 };
 
-const putPost = async (req, res) => {
+const putPostController = async (req, res) => {
   const { id } = req.params;
   const { title, content } = req.body;
-  // const [post] = posts.filter((item) => item.id === id);
-  // post.title = title;
-  // post.content = content;
-  const response = await req.db.collection.updateOne(
-    { _id: new ObjectId(id) },
-    { $set: { title, content } }
-  );
+
+  await Post.findByIdAndUpdate(id, {
+    $set: { title, content },
+  });
+  const response = await Post.findById(id);
+
   res.json({
     status: 'success',
     code: 200,
@@ -64,29 +69,12 @@ const putPost = async (req, res) => {
   });
 };
 
-// const patchPost = (req, res) => {
-//   const { id } = req.params;
-//   const { title, content } = req.body;
-//   const [post] = posts.filter((item) => item.id === id);
-//   if (title) {
-//     post.title = title;
-//   }
-//   if (content) {
-//     post.content = content;
-//   }
-//   res.json({
-//     status: 'success',
-//     code: 200,
-//     data: { post },
-//   });
-// };
-
-const deletePost = async (req, res) => {
+const deletePostController = async (req, res) => {
   const { id } = req.params;
-  // const newPosts = posts.filter((item) => item.id !== id);
-  // posts = [...newPosts];
-  await req.db.collection.deleteOne({ _id: new ObjectId(id) });
-  return res.status(200).json({
+
+  await Post.findByIdAndRemove(id);
+
+  res.status(200).json({
     status: 'success',
     code: 200,
     message: 'document deleted',
@@ -94,10 +82,9 @@ const deletePost = async (req, res) => {
 };
 
 module.exports = {
-  getPosts,
-  getPostByID,
-  addPost,
-  putPost,
-  // patchPost,
-  deletePost,
+  getPostsController,
+  getPostByIDController,
+  addPostController,
+  putPostController,
+  deletePostController,
 };
