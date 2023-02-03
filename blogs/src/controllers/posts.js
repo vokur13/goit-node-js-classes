@@ -22,10 +22,11 @@ const getPostsController = async function (req, res, next) {
   });
 };
 
-const getPostByIDController = async (req, res, next) => {
+const getPostByIDController = async (req, res) => {
   const { id } = req.params;
+  const { _id } = req.user;
 
-  const response = await getPostsByID(id);
+  const response = await getPostsByID(id, _id);
 
   res.status(200).json({
     status: 'success',
@@ -49,9 +50,10 @@ const addPostController = async (req, res) => {
 
 const putPostController = async (req, res) => {
   const { id } = req.params;
+  const { _id } = req.user;
   const { title, content } = req.body;
 
-  const response = await putPost(id, { title, content });
+  const response = await putPost(id, { title, content }, _id);
 
   res.json({
     status: 'success',
@@ -62,8 +64,9 @@ const putPostController = async (req, res) => {
 
 const deletePostController = async (req, res) => {
   const { id } = req.params;
+  const { _id } = req.user;
 
-  await deletePost(id);
+  await deletePost(id, _id);
 
   res.status(200).json({
     status: 'success',

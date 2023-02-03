@@ -1,15 +1,13 @@
 const { Post } = require('../db/postsModel');
-// const { GetItemByIDError } = require('../helpers/errors');
 
 const getPosts = async (owner) => {
   return await Post.find({ owner });
 };
 
-const getPostsByID = async (id) => {
-  const response = await Post.findById(id);
+const getPostsByID = async (id, owner) => {
+  const response = await Post.findOne({ _id: id, owner });
 
   if (!response) {
-    // throw new GetItemByIDError('Not found');
     return res.status(404).json({
       code: 404,
       message: 'Not found',
@@ -23,15 +21,18 @@ const addPost = async ({ title, content }, owner) => {
   return await Post.create({ title, content, owner });
 };
 
-const putPost = async (id, { title, content }) => {
-  await Post.findByIdAndUpdate(id, {
-    $set: { title, content },
-  });
-  return await Post.findById(id);
+const putPost = async (id, { title, content }, owner) => {
+  await Post.findOneAndUpdate(
+    { _id: id, owner },
+    {
+      $set: { title, content },
+    }
+  );
+  return await Post.findOne({ _id: id, owner });
 };
 
-const deletePost = async (id) => {
-  return await Post.findByIdAndRemove(id);
+const deletePost = async (id, owner) => {
+  return await Post.findOneAndRemove({ _id: id, owner });
 };
 
 module.exports = { getPosts, getPostsByID, addPost, putPost, deletePost };
