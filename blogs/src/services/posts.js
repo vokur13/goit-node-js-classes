@@ -1,8 +1,8 @@
 const { Post } = require('../db/postsModel');
 // const { GetItemByIDError } = require('../helpers/errors');
 
-const getPosts = async () => {
-  return await Post.find({});
+const getPosts = async (owner) => {
+  return await Post.find({ owner });
 };
 
 const getPostsByID = async (id) => {
@@ -19,8 +19,8 @@ const getPostsByID = async (id) => {
   return response;
 };
 
-const addPost = async ({ title, content }) => {
-  return await Post.create({ title, content });
+const addPost = async ({ title, content }, owner) => {
+  return await Post.create({ title, content, owner });
 };
 
 const putPost = async (id, { title, content }) => {

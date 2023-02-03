@@ -10,7 +10,8 @@ const {
 /* eslint-disable object-curly-spacing */
 
 const getPostsController = async function (req, res, next) {
-  const response = await getPosts();
+  const { _id } = req.user;
+  const response = await getPosts(_id);
 
   res.json({
     status: 'success',
@@ -34,9 +35,10 @@ const getPostByIDController = async (req, res, next) => {
 };
 
 const addPostController = async (req, res) => {
+  const { _id } = req.user;
   const { title, content } = req.body;
 
-  const response = await addPost({ title, content });
+  const response = await addPost({ title, content }, _id);
 
   res.status(201).json({
     status: 'success',
