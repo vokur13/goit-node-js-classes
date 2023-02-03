@@ -1,18 +1,25 @@
-class ValidationError extends Error {
+class MyNodejsError extends Error {
   constructor(message) {
     super(message);
     this.status = 400;
   }
 }
 
-class GetItemByIDError extends Error {
+class ValidationError extends MyNodejsError {
+  constructor(message) {
+    super(message);
+    this.status = 400;
+  }
+}
+
+class GetItemByIDError extends MyNodejsError {
   constructor(message) {
     super(message);
     this.status = 404;
   }
 }
 
-class NotAuthorizedError extends Error {
+class NotAuthorizedError extends MyNodejsError {
   constructor(message) {
     super(message);
     this.status = 401;
@@ -20,6 +27,7 @@ class NotAuthorizedError extends Error {
 }
 
 module.exports = {
+  MyNodejsError,
   ValidationError,
   GetItemByIDError,
   NotAuthorizedError,

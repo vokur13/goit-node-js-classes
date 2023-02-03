@@ -1,25 +1,34 @@
 const { User } = require('../db/userModel');
 const bcrypt = require('bcrypt');
-const saltRounds = 10;
-const myPlaintextPassword = 's0//P4$$w0rD';
-const someOtherPlaintextPassword = 'not_bacon';
+const jwt = require('jsonwebtoken');
 const { NotAuthorizedError } = require('../helpers/errors');
 
 const signup = async (email, password) => {
   const user = new User({
     email,
-    password: await bcrypt.hash(
-      //   myPlaintextPassword,
-      password,
-      saltRounds
-      //   function (err, hash) {
-      //     // Store hash in your password DB.
-      //   }
-    ),
+    password,
   });
   await user.save();
 };
 
-const login = async (id) => {};
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
+
+  if (!user) {
+    throw new NotAuthorizedError(`No user with email ${email} found`);
+  }
+
+  if (!(await bcrypt.compare(password, user.password))) {
+    throw new NotAuthorizedError(`Wrong password`);
+  }
+  const token = jwt.sign(
+    {
+      _id: user._id,
+    },
+    process.env.JWT_SECRET
+  );
+  return token;
+};
 
 module.exports = { signup, login };

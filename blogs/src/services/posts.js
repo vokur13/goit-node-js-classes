@@ -1,5 +1,5 @@
-const { Post } = require('../db/model');
-const { GetItemByIDError } = require('../helpers/errors');
+const { Post } = require('../db/postsModel');
+// const { GetItemByIDError } = require('../helpers/errors');
 
 const getPosts = async () => {
   return await Post.find({});

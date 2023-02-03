@@ -7,6 +7,18 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 require('dotenv').config();
 
+// const passport = require('passport');
+// const passportJWT = require('passport-jwt');
+// const User = require('./db/userModel');
+// const secret = process.env.JWT_SECRET;
+
+// const ExtractJWT = passportJWT.ExtractJwt;
+// const Strategy = passportJWT.Strategy;
+// const params = {
+//   secretOrKey: secret,
+//   jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+// };
+
 const { postsRouter } = require('./routes/posts');
 const { authRouter } = require('./routes/auth');
 const { errorHandler } = require('./helpers/apiHelper');
@@ -25,6 +37,22 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/posts', postsRouter);
 app.use('/api/auth', authRouter);
+
+// app.use('/api', routerApi)
+
+// // JWT Strategy
+// passport.use(
+//   new Strategy(params, function (payload, done) {
+//     User.find({ _id: payload.id })
+//       .then(([user]) => {
+//         if (!user) {
+//           return done(new Error('User not found'));
+//         }
+//         return done(null, user);
+//       })
+//       .catch((err) => done(err));
+//   })
+// );
 
 // // catch 404 and forward to error handler
 // app.use(function (req, res, next) {
