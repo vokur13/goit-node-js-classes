@@ -8,6 +8,7 @@ const logger = require('morgan');
 require('dotenv').config();
 
 const { postsRouter } = require('./routes/posts');
+const { authRouter } = require('./routes/auth');
 const { errorHandler } = require('./helpers/apiHelper');
 
 const app = express();
@@ -23,6 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/posts', postsRouter);
+app.use('/api/auth', authRouter);
 
 // // catch 404 and forward to error handler
 // app.use(function (req, res, next) {
