@@ -4,7 +4,7 @@ const {
   addPost,
   putPost,
   deletePost,
-} = require('../services/posts');
+} = require('../services/postsService');
 
 /* eslint-disable space-before-function-paren */
 /* eslint-disable object-curly-spacing */

@@ -1,4 +1,4 @@
-const { Post } = require('../db/postsModel');
+const { Post } = require('../model/postsModel');
 
 const getPosts = async (owner) => {
   return await Post.find({ owner });

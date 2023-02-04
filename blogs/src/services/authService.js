@@ -1,10 +1,13 @@
-const { User } = require('../db/userModel');
+const UserModel = require('../model/userModel');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
 const jwt = require('jsonwebtoken');
 const { NotAuthorizedError } = require('../helpers/errors');
 
+const TOP_SECRET = process.env.JWT_SECRET;
+
 const signup = async (email, password) => {
-  const user = new User({
+  const user = await new UserModel({
     email,
     password,
   });
@@ -13,7 +16,7 @@ const signup = async (email, password) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  const user = await UserModel.findOne({ email });
 
   if (!user) {
     throw new NotAuthorizedError(`No user with email ${email} found`);
@@ -30,5 +33,7 @@ const login = async (req, res) => {
   );
   return token;
 };
+
+const logout = async (req, res) => {};
 
 module.exports = { signup, login };

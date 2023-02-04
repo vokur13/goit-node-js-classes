@@ -1,5 +1,5 @@
 const app = require('./app');
-const { main } = require('./db/connection');
+const { main } = require('./model/dbConnection');
 
 const PORT = process.env.PORT || 8081;
 

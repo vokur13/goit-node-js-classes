@@ -3,7 +3,6 @@
 /* eslint-disable new-cap */
 const express = require('express');
 const router = new express.Router();
-const { auth } = require('../jwt/passport');
 const { authMiddleware } = require('../middlewares/authMiddleware');
 
 const {
@@ -12,7 +11,7 @@ const {
   addPostController,
   putPostController,
   deletePostController,
-} = require('../controllers/posts');
+} = require('../controllers/postsController');
 
 const { addPostValidation } = require('../middlewares/validation');
 const { asyncWrapper } = require('../helpers/apiHelper');
