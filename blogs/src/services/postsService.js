@@ -1,7 +1,28 @@
 const { Post } = require('../model/postsModel');
+const UserModel = require('../model/userModel');
 
-const getPosts = async (owner) => {
-  return await Post.find({ owner });
+const getPosts = async (owner, { skip, limit }) => {
+  return await Post.find({ owner })
+    .select({ _id: 0, owner: 0, __v: 0 })
+    .skip(skip)
+    .limit(limit)
+    .sort('createdAt');
+  // return await UserModel.aggregate([
+  //   {
+  //     $project: {
+  //       __v: 0,
+  //       password: 0,
+  //     },
+  //   },
+  //   {
+  //     $lookup: {
+  //       from: 'posts',
+  //       localField: '_id',
+  //       foreignField: 'owner',
+  //       as: 'userPosts',
+  //     },
+  //   },
+  // ]);
 };
 
 const getPostsByID = async (id, owner) => {

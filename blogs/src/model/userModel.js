@@ -8,6 +8,7 @@ const UserSchema = new Schema(
   {
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    posts: [{ type: Schema.Types.ObjectId, ref: 'post' }],
   },
   { timestamps: true }
 );
@@ -26,6 +27,15 @@ UserSchema.methods.isValidPassword = async function (password) {
   return compare;
 };
 
+// Create a virtual property `domain` that's computed from `email`.
+UserSchema.virtual('domain').get(function () {
+  return this.email.slice(this.email.indexOf('@') + 1);
+});
+
 const UserModel = mongoose.model('user', UserSchema);
+
+// let doc = await User.create({ email: 'test@gmail.com' });
+// // `domain` is now a property on User documents.
+// doc.domain; // 'gmail.com'
 
 module.exports = UserModel;
