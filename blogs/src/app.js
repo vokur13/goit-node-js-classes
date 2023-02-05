@@ -10,8 +10,9 @@ require('dotenv').config();
 
 require('./auth/auth');
 
-const { postsRouter } = require('./routes/postsRoute');
-const { authRouter } = require('./routes/authRoute');
+const { postsRoutes } = require('./routes/postsRoutes');
+const { authRoutes } = require('./routes/authRoutes');
+const secureRoute = require('./routes/secure-routes');
 
 const { errorHandler } = require('./helpers/apiHelper');
 
@@ -27,8 +28,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/posts', postsRouter);
-app.use('/api/auth', authRouter);
+app.use('/api/auth', authRoutes);
+app.use('/api/posts', postsRoutes);
+
+// Plug in the JWT strategy as a middleware so only verified users can access this route.
+app.use('/user', passport.authenticate('jwt', { session: false }), secureRoute);
 
 // // catch 404 and forward to error handler
 // app.use(function (req, res, next) {

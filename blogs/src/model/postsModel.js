@@ -1,19 +1,18 @@
-const { string } = require('joi');
 const mongoose = require('mongoose');
 
-const dataSchema = new mongoose.Schema({
-  title: { type: String, required: true, unique: true },
-  content: { type: String, required: true },
-  created: { type: Date, default: Date.now() },
-  owner: {
-    type: String,
-    required: true,
+const Schema = mongoose.Schema;
+
+const dataSchema = new Schema(
+  {
+    title: { type: String, required: true, unique: true },
+    content: { type: String, required: true },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: 'user',
+    },
   },
-  // owner: {
-  //   type: SchemaTypes.ObjectId,
-  //   ref: 'user',
-  // },
-});
+  { timestamps: true }
+);
 
 const Post = mongoose.model('post', dataSchema);
 

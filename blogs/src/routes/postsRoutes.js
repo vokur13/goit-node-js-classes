@@ -3,7 +3,8 @@
 /* eslint-disable new-cap */
 const express = require('express');
 const router = new express.Router();
-const { authMiddleware } = require('../middlewares/authMiddleware');
+// const { authMiddleware } = require('../middlewares/authMiddleware');
+const auth = require('../middleware/authMiddleware');
 
 const {
   getPostsController,
@@ -11,13 +12,12 @@ const {
   addPostController,
   putPostController,
   deletePostController,
-} = require('../controllers/postsController');
+} = require('../controller/postsController');
 
-const { addPostValidation } = require('../middlewares/validation');
+const { addPostValidation } = require('../middleware/validationMiddleware');
 const { asyncWrapper } = require('../helpers/apiHelper');
 
-router.use(authMiddleware);
-// router.use(auth);
+router.use(auth);
 
 router
   .get('/', asyncWrapper(getPostsController))
@@ -26,15 +26,4 @@ router
   .put('/:id', addPostValidation, asyncWrapper(putPostController))
   .delete('/:id', asyncWrapper(deletePostController));
 
-module.exports = { postsRouter: router };
-
-// router.get('/list', auth, (req, res, next) => {
-//   const { username } = req.user;
-//   res.json({
-//     status: 'success',
-//     code: 200,
-//     data: {
-//       message: `Authorization was successful: ${username}`,
-//     },
-//   });
-// });
+module.exports = { postsRoutes: router };
