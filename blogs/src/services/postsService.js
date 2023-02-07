@@ -52,6 +52,13 @@ const putPost = async (id, { title, content }, owner) => {
   return await Post.findOne({ _id: id, owner });
 };
 
+// await Post.findOneAndUpdate(
+//   { _id: id, owner },
+//   {
+//     $set: { token: null },
+//   }
+// );
+
 const deletePost = async (id, owner) => {
   return await Post.findOneAndRemove({ _id: id, owner });
 };
