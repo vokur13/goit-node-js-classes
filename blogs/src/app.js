@@ -12,6 +12,7 @@ require('./auth/auth');
 
 const { postsRoutes } = require('./routes/postsRoutes');
 const { authRoutes } = require('./routes/authRoutes');
+const { filesRoutes } = require('./routes/filesRoutes');
 const secureRoute = require('./routes/secure-routes');
 
 const { errorHandler } = require('./helpers/apiHelper');
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/posts', postsRoutes);
+app.use('/api/files', filesRoutes);
 
 // Plug in the JWT strategy as a middleware so only verified users can access this route.
 app.use('/user', passport.authenticate('jwt', { session: false }), secureRoute);

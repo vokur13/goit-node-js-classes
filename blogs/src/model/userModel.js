@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+// const gravatar = require('gravatar');
 
 const Schema = mongoose.Schema;
 
@@ -9,6 +10,7 @@ const UserSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     posts: [{ type: Schema.Types.ObjectId, ref: 'post' }],
+    avatarURL: String,
   },
   { timestamps: true }
 );

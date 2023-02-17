@@ -1,6 +1,3 @@
-/* eslint-disable indent */
-/* eslint-disable object-curly-spacing */
-/* eslint-disable new-cap */
 const express = require('express');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
