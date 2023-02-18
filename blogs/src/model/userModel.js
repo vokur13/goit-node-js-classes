@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
+mongoose.set('useFindAndModify', false);
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
-// const gravatar = require('gravatar');
 
 const Schema = mongoose.Schema;
 
