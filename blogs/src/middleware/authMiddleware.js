@@ -41,15 +41,6 @@ const auth = async (req, res, next) => {
     const user = jwt.decode(token, process.env.JWT_SECRET);
     const u = await UserModel.findById(user._id);
     req.user = user;
-
-    // if (!u) {
-    //   next(new NotAuthorizedError('Invalid token'));
-    // }
-    // if (u.token !== token) {
-    //   next(new NotAuthorizedError('Invalid token'));
-    // }
-
-    // req.user = u;
     req.token = token;
     next();
   } catch (error) {
