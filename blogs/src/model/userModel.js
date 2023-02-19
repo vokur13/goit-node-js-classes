@@ -11,6 +11,14 @@ const UserSchema = new Schema(
     password: { type: String, required: true },
     posts: [{ type: Schema.Types.ObjectId, ref: 'post' }],
     avatarURL: String,
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationToken: {
+      type: String,
+      required: [true, 'Verify token is required'],
+    },
   },
   { timestamps: true }
 );

@@ -6,6 +6,10 @@ const router = express.Router();
 
 const TOP_SECRET = process.env.JWT_SECRET;
 
+const { authConfirmation } = require('../controller');
+const { authConfirmationRepeat } = require('../controller');
+const { asyncWrapper } = require('../helpers/apiHelper');
+
 router
   .post(
     '/signup',
@@ -13,6 +17,7 @@ router
     async (req, res, next) => {
       res.json({
         message: 'Signup successful',
+        // user: req.user,
         user: req.user,
       });
     }
@@ -38,6 +43,8 @@ router
         return next(error);
       }
     })(req, res, next);
-  });
+  })
+  .get('/users/verify/:verificationToken', asyncWrapper(authConfirmation))
+  .post('/users/verify', asyncWrapper(authConfirmationRepeat));
 
 module.exports = { authRoutes: router };
