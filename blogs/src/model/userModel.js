@@ -25,9 +25,11 @@ const UserSchema = new Schema(
 
 UserSchema.pre('save', async function (next) {
   const user = this;
-  const hash = await bcrypt.hash(this.password, saltRounds);
-  this.password = hash;
-  next();
+  if (this.isNew || this.isModified) {
+    const hash = await bcrypt.hash(this.password, saltRounds);
+    this.password = hash;
+    next();
+  }
 });
 
 UserSchema.methods.isValidPassword = async function (password) {
