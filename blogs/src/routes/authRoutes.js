@@ -8,6 +8,7 @@ const TOP_SECRET = process.env.JWT_SECRET;
 
 const { authConfirmation } = require('../controller');
 const { authConfirmationRepeat } = require('../controller');
+const { forgotPassword } = require('../controller');
 const { asyncWrapper } = require('../helpers/apiHelper');
 
 router
@@ -45,6 +46,7 @@ router
     })(req, res, next);
   })
   .get('/users/verify/:verificationToken', asyncWrapper(authConfirmation))
-  .post('/users/verify', asyncWrapper(authConfirmationRepeat));
+  .post('/users/verify', asyncWrapper(authConfirmationRepeat))
+  .post('/forgot_password', asyncWrapper(forgotPassword));
 
 module.exports = { authRoutes: router };

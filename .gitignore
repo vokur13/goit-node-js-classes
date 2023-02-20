@@ -104,3 +104,4 @@ dist
 .tern-port
 node-js-getting-started/
 weather/homebrew/
+sendgrid.env
